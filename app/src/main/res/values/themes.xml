@@ -1,9 +1,47 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.StudentCalculator" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <style name="Base.Theme.StudentCalculator" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">#1976D2</item>
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:statusBarColor">@android:color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="Theme.StudentCalculator" parent="Base.Theme.StudentCalculator" />
+
+    <!-- Common Circular Style -->
+    <style name="Widget.App.Button.Circular" parent="Widget.Material3.Button">
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="cornerRadius">100dp</item>
+        <item name="layout_constraintDimensionRatio">1:1</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:padding">0dp</item>
+        <item name="elevation">0dp</item>
+    </style>
+
+    <!-- Numeric Buttons: Light Gray -->
+    <style name="Widget.App.Button.Circular.Numeric" parent="Widget.App.Button.Circular">
+        <item name="backgroundTint">#F0F0F4</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <!-- Action Buttons: White (Blends with background) -->
+    <style name="Widget.App.Button.Circular.Action" parent="Widget.App.Button.Circular">
+        <item name="backgroundTint">#F0F0F4</item>
+        <item name="android:textColor">?attr/colorPrimary</item>
+        <item name="android:textSize">18sp</item>
+        <item name="rippleColor">#1A000000</item>
+    </style>
+
+    <!-- Equals Button: Highlighted -->
+    <style name="Widget.App.Button.Circular.Equals" parent="Widget.App.Button.Circular">
+        <item name="backgroundTint">?attr/colorPrimary</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">24sp</item>
+    </style>
 </resources>

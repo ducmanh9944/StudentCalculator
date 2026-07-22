@@ -8,15 +8,27 @@ Version: 1.0
 
 # 1. Overview
 
-This document describes the technical architecture of the Student Calculator Android application.
+## 1.1 Purpose
 
-The application follows a clean MVVM architecture and is designed to be:
+This document describes the technical architecture of the **Student Calculator** Android application.
 
-- Modular
+The application is designed for Vietnamese middle school students and provides mathematical calculation tools in a simple, fast and completely offline environment.
+
+The architecture follows the **MVVM (Model - View - ViewModel)** pattern to ensure the project is easy to develop, maintain and extend.
+
+---
+
+## 1.2 Design Goals
+
+The application should be:
+
 - Offline-first
+- Lightweight
+- Modular
 - Easy to maintain
 - Easy to extend
 - Beginner-friendly
+- Suitable for Android development using Java and XML
 
 ---
 
@@ -42,7 +54,7 @@ The application follows a clean MVVM architecture and is designed to be:
 
 # 3. Architecture Pattern
 
-The application follows the MVVM pattern.
+The application follows the MVVM architecture.
 
 ```
                 UI Layer
@@ -59,9 +71,9 @@ The application follows the MVVM pattern.
    Room Database      Utility Classes
 ```
 
-### Responsibilities
+---
 
-### UI Layer
+## 3.1 UI Layer
 
 Responsible for:
 
@@ -70,31 +82,32 @@ Responsible for:
 - Observing LiveData
 - Navigation
 
-The UI layer must NOT:
+The UI layer must **NOT**:
 
 - Access Room directly
-- Contain business logic
 - Perform mathematical calculations
+- Contain business logic
 
 ---
 
-### ViewModel Layer
+## 3.2 ViewModel Layer
 
 Responsible for:
 
 - Managing UI state
-- Calling repositories
 - Validating user input
-- Preparing data for UI
+- Calling repositories
+- Returning data to UI
 
-The ViewModel must NOT:
+The ViewModel must **NOT**:
 
-- Hold Activity or Fragment references
+- Hold Activity references
+- Hold Fragment references
 - Access Views directly
 
 ---
 
-### Repository Layer
+## 3.3 Repository Layer
 
 Responsible for:
 
@@ -102,46 +115,53 @@ Responsible for:
 - Writing data
 - Hiding the data source
 
-Currently implemented:
+Current repository:
 
 - HistoryRepository
 
-Future repositories may include:
-
-- FormulaRepository
+All Room operations should be executed using ExecutorService.
 
 ---
 
-### Database Layer
+## 3.4 Database Layer
 
-Room is used for local persistence.
+The application uses **Room Database**.
 
-Current tables:
+Current database:
 
 - History
 
-Future versions may add more tables without affecting existing modules.
+Future database tables can be added without affecting existing modules.
 
 ---
 
-### Utility Layer
+## 3.5 Utility Layer
 
-Contains pure Java classes.
+The utils package contains pure Java classes.
 
 Examples:
 
 - EquationSolver
+- CubicEquationSolver
+- SystemEquationSolver
 - MathUtils
 - UnitConverter
 - ExpressionEvaluator
 - NumberFormatter
 - ValidationUtils
 
-Utility classes must:
+Rules:
 
-- Be independent of Android APIs
-- Be reusable
-- Be easy to test
+- No Android dependency
+- No Context
+- No Activity
+- No Fragment
+- Reusable
+- Easy to test
+
+Every mathematical algorithm must be implemented inside the utils package.
+
+Neither Fragment nor ViewModel should implement mathematical algorithms directly.
 
 ---
 
@@ -151,25 +171,50 @@ Utility classes must:
 app/
 
 ├── activity/
+│   └── MainActivity.java
 │
-├── adapter/
+├── fragment/
+│   ├── CalculatorFragment.java
+│   ├── ToolsFragment.java
+│   ├── LinearEquationFragment.java
+│   ├── QuadraticEquationFragment.java
+│   ├── CubicEquationFragment.java
+│   ├── SystemEquationFragment.java
+│   ├── NumberToolsFragment.java
+│   ├── ConverterFragment.java
+│   └── HistoryFragment.java
+│
+├── viewmodel/
+│   ├── CalculatorViewModel.java
+│   ├── EquationViewModel.java
+│   ├── NumberToolsViewModel.java
+│   ├── ConverterViewModel.java
+│   └── HistoryViewModel.java
+│
+├── repository/
+│   └── HistoryRepository.java
 │
 ├── database/
 │   ├── AppDatabase.java
 │   ├── HistoryDao.java
 │   └── HistoryEntity.java
 │
-├── fragment/
+├── adapter/
+│   └── HistoryAdapter.java
 │
-├── listener/
+├── utils/
+│   ├── EquationSolver.java
+│   ├── CubicEquationSolver.java
+│   ├── SystemEquationSolver.java
+│   ├── MathUtils.java
+│   ├── UnitConverter.java
+│   ├── ExpressionEvaluator.java
+│   ├── NumberFormatter.java
+│   └── ValidationUtils.java
 │
 ├── model/
 │
-├── repository/
-│
-├── utils/
-│
-└── viewmodel/
+└── listener/
 ```
 
 ---
@@ -179,24 +224,24 @@ app/
 ```
 Calculator
 
-Equation Solver
+Tools
     ├── Linear Equation
-    └── Quadratic Equation
-
-Math Tools
-    ├── GCD
-    ├── LCM
-    ├── Prime Factorization
-    └── Factorial
-
-Formula Library
-
-Unit Converter
+    ├── Quadratic Equation
+    ├── Cubic Equation
+    ├── System of Two Linear Equations
+    ├── GCD & LCM
+    └── Unit Converter
 
 History
-
-Settings
 ```
+
+The application contains only three main modules accessible from the Bottom Navigation:
+
+- Calculator
+- Tools
+- History
+
+Each tool is implemented as an independent Fragment to improve maintainability and future scalability.
 
 ---
 
@@ -204,36 +249,36 @@ Settings
 
 The application uses:
 
-- Single Activity
+- Single Activity architecture
 - Multiple Fragments
 - Navigation Component
+- Bottom Navigation View
 
-Navigation flow:
+Navigation hierarchy:
 
 ```
 MainActivity
-
 │
-
 ├── Calculator
-
+│
 ├── Tools
-│     ├── Equation
-│     ├── Math Tools
-│     ├── Converter
-│     └── Formula
-
-├── History
-
-└── Settings
+│     ├── Linear Equation
+│     ├── Quadratic Equation
+│     ├── Cubic Equation
+│     ├── System of Two Linear Equations
+│     ├── GCD & LCM
+│     └── Unit Converter
+│
+└── History
 ```
 
-Bottom Navigation contains four tabs:
+Bottom Navigation contains only three tabs:
 
 - Calculator
 - Tools
 - History
-- Settings
+
+The Calculator screen is the start destination.
 
 ---
 
@@ -241,101 +286,131 @@ Bottom Navigation contains four tabs:
 
 | Package | Responsibility |
 |-----------|----------------|
-| activity | Application entry points |
-| fragment | User interface |
+| activity | Application entry point |
+| fragment | Display UI and receive user interaction |
+| viewmodel | Manage UI state and communicate with Repository |
+| repository | Data access layer |
+| database | Room Database implementation |
 | adapter | RecyclerView adapters |
-| database | Room database |
-| repository | Data access |
+| utils | Mathematical algorithms and helper classes |
 | model | Data models |
-| utils | Business utilities |
 | listener | Callback interfaces |
-| viewmodel | UI state |
 
 ---
 
 # 8. Database Design
 
-Current database contains one table.
+The application currently contains only one Room table.
 
-History
+## History
 
 | Field | Type | Description |
 |--------|------|-------------|
-| id | INTEGER | Primary Key |
-| type | TEXT | Calculator module |
-| expression | TEXT | Original input |
+| id | INTEGER | Primary Key (Auto Increment) |
+| type | TEXT | Calculation type |
+| expression | TEXT | Original expression or input |
 | result | TEXT | Display result |
 | createdAt | INTEGER | Unix timestamp |
 
-History types:
+### History Types
 
 - calculator
-- linear_eq
-- quadratic_eq
+- linear
+- quadratic
+- cubic
+- system
 - gcd_lcm
-- prime_factor
-- factorial
 - converter
 
-Future modules should add new types instead of creating new history tables whenever possible.
+Future features should continue using the History table whenever possible instead of creating additional history tables.
 
 ---
 
 # 9. Coding Conventions
 
-## Naming
+## Naming Convention
 
-| Item | Convention |
-|------|------------|
-| Activity | MainActivity |
-| Fragment | CalculatorFragment |
-| ViewModel | CalculatorViewModel |
-| Adapter | HistoryAdapter |
-| Utility | MathUtils |
-| XML | fragment_calculator.xml |
-| Layout ID | btnEquals |
-| String Resource | calculator_divide_zero |
+| Item | Convention | Example |
+|------|------------|---------|
+| Activity | PascalCase + Activity | MainActivity |
+| Fragment | PascalCase + Fragment | CalculatorFragment |
+| ViewModel | PascalCase + ViewModel | CalculatorViewModel |
+| Repository | PascalCase + Repository | HistoryRepository |
+| Adapter | PascalCase + Adapter | HistoryAdapter |
+| Utility | PascalCase | MathUtils |
+| XML Layout | snake_case | fragment_calculator.xml |
+| XML ID | camelCase | btnEquals |
+| String Resource | snake_case | calculator_divide_zero |
 
 ---
 
 ## General Rules
 
-- One class has one responsibility.
+- One class has only one responsibility.
 - Keep methods short and readable.
 - Avoid duplicated code.
-- Prefer reusable components.
-- Use meaningful names.
 - Avoid magic numbers.
 - Avoid hardcoded strings.
-- Keep business logic outside UI.
+- Prefer reusable methods.
+- Use meaningful class and variable names.
+- Follow MVVM consistently.
+
+---
+
+## Utility Layer Rules
+
+All mathematical logic must be implemented inside the **utils** package.
+
+Examples:
+
+- Expression evaluation
+- Equation solving
+- Unit conversion
+- GCD & LCM
+- Number formatting
+
+Fragments and ViewModels must call utility classes instead of implementing algorithms themselves.
 
 ---
 
 # 10. UI Guidelines
 
-The application follows Material Design 3.
+The application follows **Material Design 3**.
 
-General principles:
+Design principles:
 
 - Simple
+- Minimal
 - Clean
 - Student-friendly
 - Responsive
+- Easy to use
 
-Components:
+Main Components:
 
 - MaterialButton
 - MaterialCardView
 - RecyclerView
 - TextInputLayout
+- TextInputEditText
 - MaterialAlertDialog
 
-Theme:
+Application Theme:
 
-- Light Mode
-- Dark Mode
+- Light Theme only
 
-Theme selection is persisted locally.
+General UI Rules:
+
+- White background
+- Consistent spacing
+- Rounded corners (12dp)
+- Material Icons
+- No illustrations
+- No unnecessary animations
+- Large touch targets
+- Responsive on different screen sizes
+
+The calculator screen should have a layout similar to Samsung Calculator while maintaining Material Design principles.
 
 ---
 
@@ -343,34 +418,56 @@ Theme selection is persisted locally.
 
 The application must never crash because of invalid user input.
 
-Validation should occur before processing.
+All inputs should be validated before processing.
+
+Common validation cases:
+
+- Empty input
+- Invalid number format
+- Division by zero
+- Invalid mathematical expression
+- Mismatched parentheses
+- Overflow
+- Invalid equation coefficients
+
+User-friendly error messages should always be displayed instead of application crashes.
 
 Examples:
 
-- Empty input
-- Division by zero
-- Invalid expression
-- Overflow
-- Invalid equation
-- Invalid number format
-
-Errors should always be displayed using user-friendly messages.
+| Situation | Message |
+|------------|---------|
+| Division by zero | Cannot divide by zero |
+| Empty input | Please enter a value |
+| Invalid expression | Invalid expression |
+| Invalid equation | Invalid equation |
+| Invalid number | Invalid number format |
 
 ---
 
 # 12. History Strategy
 
-History is saved only when an operation succeeds.
+History is used to store successful calculations.
 
-Failed calculations must not be stored.
+History is saved only when an operation completes successfully.
+
+Failed operations must never be stored.
+
+History records include:
+
+- Calculation type
+- Original expression or input
+- Result
+- Timestamp
 
 History is sorted by newest first.
 
 Users can:
 
 - View history
-- Delete one record
-- Delete all records
+- Delete a single record
+- Clear all history
+
+The History module uses Room Database with LiveData to automatically update the UI whenever the database changes.
 
 ---
 
@@ -379,12 +476,13 @@ Users can:
 | Feature | Fragment | ViewModel | Repository | Database |
 |----------|----------|-----------|------------|----------|
 | Calculator | CalculatorFragment | CalculatorViewModel | — | — |
-| Equation Solver | EquationFragment | EquationViewModel | — | — |
-| Math Tools | MathToolsFragment | MathToolsViewModel | — | — |
-| Formula Library | FormulaFragment | FormulaViewModel | — | — |
+| Linear Equation | LinearEquationFragment | EquationViewModel | — | — |
+| Quadratic Equation | QuadraticEquationFragment | EquationViewModel | — | — |
+| Cubic Equation | CubicEquationFragment | EquationViewModel | — | — |
+| System Equation | SystemEquationFragment | EquationViewModel | — | — |
+| GCD & LCM | NumberToolsFragment | NumberToolsViewModel | — | — |
 | Unit Converter | ConverterFragment | ConverterViewModel | — | — |
 | History | HistoryFragment | HistoryViewModel | HistoryRepository | History |
-| Settings | SettingsFragment | — | — | — |
 
 ---
 
@@ -392,24 +490,68 @@ Users can:
 
 The architecture is designed to support future modules with minimal modification.
 
-Possible future features:
+Possible future features include:
 
 - Scientific Calculator
-- OCR
-- AI Assistant
+- Formula Library
 - Graph Plotter
-- Cloud Sync
-- Multi-language
-- Favorite Formulas
+- OCR (Image to Math)
+- AI Assistant
+- Cloud Synchronization
+- Multi-language Support
+- Favorite Calculations
+- Calculation Export (PDF / Image)
 
-New features should be added as independent modules following the existing architecture.
+New features should be implemented as independent modules following the existing MVVM architecture.
+
+Whenever possible:
+
+- Reuse existing utility classes.
+- Reuse the History table.
+- Avoid modifying stable modules.
+
+This approach minimizes maintenance costs and keeps the project scalable.
 
 ---
 
 # 15. Development Principles
 
-- Keep the application offline-first.
+The following principles should be followed throughout the project:
+
+### Architecture
+
 - Follow MVVM consistently.
-- Reuse existing utility classes whenever possible.
-- Maintain backward compatibility with existing data.
-- Update documentation whenever architecture changes.
+- Separate UI, business logic and data layers.
+- Keep modules loosely coupled.
+
+### Code Quality
+
+- One class has one responsibility.
+- Keep methods small and readable.
+- Avoid duplicated code.
+- Write reusable components.
+- Use meaningful names.
+- Keep code clean and maintainable.
+
+### Performance
+
+- Avoid unnecessary object creation.
+- Execute database operations on background threads.
+- Observe LiveData only when necessary.
+
+### Offline First
+
+- The application must work completely offline.
+- No Internet connection is required.
+- No user account is required.
+- No cloud synchronization is required.
+
+### Documentation
+
+Whenever a new feature is added:
+
+- Update SRS.md if requirements change.
+- Update ARCHITECTURE.md if the architecture changes.
+- Update TASK.md to reflect implementation progress.
+
+Keeping documentation synchronized with the source code helps ensure long-term maintainability and easier collaboration among team members.

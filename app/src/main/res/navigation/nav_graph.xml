@@ -23,9 +23,35 @@
         android:label="Lịch sử"
         tools:layout="@layout/fragment_history" />
 
+    <!-- Sub-tools destinations -->
     <fragment
-        android:id="@+id/nav_settings"
-        android:name="com.example.studentcalculator.fragment.SettingsFragment"
-        android:label="Cài đặt"
-        tools:layout="@layout/fragment_settings" />
+        android:id="@+id/nav_linear_equation"
+        android:name="com.example.studentcalculator.fragment.LinearEquationFragment"
+        android:label="Phương trình bậc nhất" />
+
+    <fragment
+        android:id="@+id/nav_quadratic_equation"
+        android:name="com.example.studentcalculator.fragment.QuadraticEquationFragment"
+        android:label="Phương trình bậc hai" />
+
+    <fragment
+        android:id="@+id/nav_cubic_equation"
+        android:name="com.example.studentcalculator.fragment.CubicEquationFragment"
+        android:label="Phương trình bậc ba" />
+
+    <fragment
+        android:id="@+id/nav_system_equation"
+        android:name="com.example.studentcalculator.fragment.SystemEquationFragment"
+        android:label="Hệ phương trình" />
+
+    <fragment
+        android:id="@+id/nav_gcd_lcm"
+        android:name="com.example.studentcalculator.fragment.NumberToolsFragment"
+        android:label="ƯCLN &amp; BCNN" />
+
+    <fragment
+        android:id="@+id/nav_converter"
+        android:name="com.example.studentcalculator.fragment.ConverterFragment"
+        android:label="Chuyển đổi đơn vị" />
+
 </navigation>

@@ -9,18 +9,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import com.example.studentcalculator.databinding.FragmentQuadraticEquationBinding;
+import com.example.studentcalculator.databinding.FragmentCubicEquationBinding;
 import com.example.studentcalculator.viewmodel.EquationViewModel;
 
-public class QuadraticEquationFragment extends Fragment {
+public class CubicEquationFragment extends Fragment {
 
-    private FragmentQuadraticEquationBinding binding;
+    private FragmentCubicEquationBinding binding;
     private EquationViewModel viewModel;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentQuadraticEquationBinding.inflate(inflater, container, false);
+        binding = FragmentCubicEquationBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -32,21 +32,24 @@ public class QuadraticEquationFragment extends Fragment {
     }
 
     private void solve() {
-        String strA = binding.etA.getText().toString();
-        String strB = binding.etB.getText().toString();
-        String strC = binding.etC.getText().toString();
+        String sA = binding.etA.getText().toString();
+        String sB = binding.etB.getText().toString();
+        String sC = binding.etC.getText().toString();
+        String sD = binding.etD.getText().toString();
 
-        if (strA.isEmpty() || strB.isEmpty() || strC.isEmpty()) {
-            Toast.makeText(getContext(), "Vui lòng nhập đầy đủ hệ số", Toast.LENGTH_SHORT).show();
+        if (sA.isEmpty() || sB.isEmpty() || sC.isEmpty() || sD.isEmpty()) {
+            Toast.makeText(getContext(), "Vui lòng nhập đủ hệ số", Toast.LENGTH_SHORT).show();
             return;
         }
 
         try {
-            double a = Double.parseDouble(strA);
-            double b = Double.parseDouble(strB);
-            double c = Double.parseDouble(strC);
+            double a = Double.parseDouble(sA);
+            double b = Double.parseDouble(sB);
+            double c = Double.parseDouble(sC);
+            double d = Double.parseDouble(sD);
 
-            String result = viewModel.solveQuadratic(a, b, c);
+            // Sử dụng ViewModel để giải và lưu lịch sử
+            String result = viewModel.solveCubic(a, b, c, d);
             binding.tvResult.setText(result);
         } catch (NumberFormatException e) {
             Toast.makeText(getContext(), "Hệ số không hợp lệ", Toast.LENGTH_SHORT).show();

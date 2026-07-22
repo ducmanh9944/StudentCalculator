@@ -9,18 +9,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import com.example.studentcalculator.databinding.FragmentQuadraticEquationBinding;
+import com.example.studentcalculator.databinding.FragmentSystemEquationBinding;
 import com.example.studentcalculator.viewmodel.EquationViewModel;
 
-public class QuadraticEquationFragment extends Fragment {
+public class SystemEquationFragment extends Fragment {
 
-    private FragmentQuadraticEquationBinding binding;
+    private FragmentSystemEquationBinding binding;
     private EquationViewModel viewModel;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentQuadraticEquationBinding.inflate(inflater, container, false);
+        binding = FragmentSystemEquationBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -32,24 +32,19 @@ public class QuadraticEquationFragment extends Fragment {
     }
 
     private void solve() {
-        String strA = binding.etA.getText().toString();
-        String strB = binding.etB.getText().toString();
-        String strC = binding.etC.getText().toString();
-
-        if (strA.isEmpty() || strB.isEmpty() || strC.isEmpty()) {
-            Toast.makeText(getContext(), "Vui lòng nhập đầy đủ hệ số", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
         try {
-            double a = Double.parseDouble(strA);
-            double b = Double.parseDouble(strB);
-            double c = Double.parseDouble(strC);
+            double a1 = Double.parseDouble(binding.etA1.getText().toString());
+            double b1 = Double.parseDouble(binding.etB1.getText().toString());
+            double c1 = Double.parseDouble(binding.etC1.getText().toString());
+            double a2 = Double.parseDouble(binding.etA2.getText().toString());
+            double b2 = Double.parseDouble(binding.etB2.getText().toString());
+            double c2 = Double.parseDouble(binding.etC2.getText().toString());
 
-            String result = viewModel.solveQuadratic(a, b, c);
+            // Sử dụng ViewModel để giải và lưu lịch sử
+            String result = viewModel.solveSystem(a1, b1, c1, a2, b2, c2);
             binding.tvResult.setText(result);
         } catch (NumberFormatException e) {
-            Toast.makeText(getContext(), "Hệ số không hợp lệ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Vui lòng nhập đầy đủ và đúng định dạng hệ số", Toast.LENGTH_SHORT).show();
         }
     }
 
