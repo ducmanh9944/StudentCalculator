@@ -71,7 +71,6 @@ public class HistoryFragment extends Fragment implements HistoryAdapter.OnItemCl
 
     @Override
     public void onItemClick(HistoryEntity history) {
-        // Có thể bổ sung logic khi click vào item (VD: copy kết quả)
         Toast.makeText(getContext(), "Đã chọn: " + history.getResult(), Toast.LENGTH_SHORT).show();
     }
 

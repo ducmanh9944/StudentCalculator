@@ -4,29 +4,29 @@ import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 
 public class ExpressionEvaluator {
+
     public static double evaluate(String expression) throws Exception {
         if (expression == null || expression.trim().isEmpty()) {
             return 0;
         }
 
-        // 1. Thay thế các ký hiệu hiển thị cơ bản
         String processed = expression
                 .replace('×', '*')
                 .replace('÷', '/')
-                .replace(',', '.');
+                .replace(',', '.')
+                .replace("π", "pi"); // Thêm hỗ trợ số Pi
 
-        // 2. Xử lý phần trăm (%) thông minh (Calculator Style: A + B% -> A + (A * B / 100))
+        // (A + B% -> A + (A * B / 100))
         processed = handlePercentage(processed);
 
-        // 3. Xử lý nhân ngầm định (Implicit Multiplication)
-        // Chèn * giữa (số hoặc ngoặc đóng) và (dấu căn hoặc ngoặc mở)
-        // \u221A là √
+        // Xử lý nhân ngầm định (Ví dụ: 2√9 -> 2*√9, 2π -> 2*pi, (2)(3) -> (2)*(3))
+        // Bổ sung π và các hàm lượng giác vào regex nhân ngầm định
         processed = processed
-                .replaceAll("(\\d|\\))(?=[\\u221A\\(])", "$1*")
+                .replaceAll("(\\d|\\))(?=[\\u221A\\(πsct])", "$1*")
                 .replaceAll("(\\))(?=\\d)", "$1*");
 
-        // 4. Thay thế dấu căn √ (\u221A) bằng hàm sqrt của exp4j
-        processed = processed.replace("\u221A", "sqrt").replace("√", "sqrt");
+        // Thay thế dấu căn √ (\u221A) bằng hàm sqrt của exp4j
+        processed = processed.replace("\u221A", "sqrt");
 
         try {
             Expression e = new ExpressionBuilder(processed).build();
@@ -42,62 +42,27 @@ public class ExpressionEvaluator {
         }
     }
 
-    /**
-     * Logic xử lý phần trăm thông minh:
-     * - Nếu là A + B% hoặc A - B%, nó sẽ được chuyển thành A + (A * B / 100).
-     * - Các trường hợp khác (như A * B% hoặc đứng một mình) vẫn là B / 100.
-     */
-    private static String handlePercentage(String expression) {
-        StringBuilder sb = new StringBuilder(expression);
-        int i = 0;
-        while ((i = sb.indexOf("%", i)) != -1) {
-            int bEnd = i;
-            int bStart = bEnd - 1;
-            // Tìm số B đứng trước dấu %
-            while (bStart >= 0 && (Character.isDigit(sb.charAt(bStart)) || sb.charAt(bStart) == '.')) {
-                bStart--;
+    private static String handlePercentage(String input) {
+        StringBuilder sb = new StringBuilder(input);
+        int index;
+        while ((index = sb.indexOf("%")) != -1) {
+            int numEnd = index;
+            int numStart = numEnd - 1;
+            while (numStart >= 0 && (Character.isDigit(sb.charAt(numStart)) || sb.charAt(numStart) == '.')) {
+                numStart--;
             }
-
-            if (bStart < bEnd - 1) {
-                String bStr = sb.substring(bStart + 1, bEnd);
-                
-                // Kiểm tra xem có toán tử + hoặc - ngay trước số B không
-                if (bStart >= 0 && (sb.charAt(bStart) == '+' || sb.charAt(bStart) == '-')) {
-                    char op = sb.charAt(bStart);
-                    
-                    // Tìm điểm bắt đầu của biểu thức A (trong cùng một cấp độ ngoặc)
-                    int aStartCandidate = bStart - 1;
-                    int balance = 0;
-                    while (aStartCandidate >= 0) {
-                        char c = sb.charAt(aStartCandidate);
-                        if (c == ')') balance++;
-                        else if (c == '(') {
-                            if (balance == 0) break;
-                            balance--;
-                        }
-                        aStartCandidate--;
-                    }
-                    int aStart = aStartCandidate + 1;
-                    
-                    String aStr = sb.substring(aStart, bStart).trim();
-                    
-                    // A không được rỗng và không kết thúc bằng một toán tử khác (ví dụ: 5 * -10%)
-                    if (!aStr.isEmpty() && !isOperator(aStr.charAt(aStr.length() - 1))) {
-                        // Thay thế "A op B%" thành "((A) op ((A)*(B/100)))"
-                        String replacement = "((" + aStr + ")" + op + "((" + aStr + ")*(" + bStr + "/100)))";
-                        sb.replace(aStart, i + 1, replacement);
-                        i = aStart + replacement.length();
-                        continue;
-                    }
+            String bStr = sb.substring(numStart + 1, numEnd);
+            
+            if (numStart >= 0 && (sb.charAt(numStart) == '+' || sb.charAt(numStart) == '-')) {
+                char op = sb.charAt(numStart);
+                String aStr = sb.substring(0, numStart);
+                if (!aStr.isEmpty()) {
+                    String replacement = "(" + aStr + ")" + op + "((" + aStr + ")*(" + bStr + "/100))";
+                    sb.replace(0, index + 1, replacement);
+                    continue; 
                 }
-                
-                // Trường hợp mặc định cho nhân/chia hoặc đứng một mình: B% -> (B/100)
-                String replacement = "(" + bStr + "/100)";
-                sb.replace(bStart + 1, i + 1, replacement);
-                i = bStart + replacement.length();
-            } else {
-                i++;
             }
+            sb.replace(numStart + 1, index + 1, "(" + bStr + "/100)");
         }
         return sb.toString();
     }

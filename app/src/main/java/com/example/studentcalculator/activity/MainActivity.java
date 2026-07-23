@@ -50,10 +50,8 @@ public class MainActivity extends AppCompatActivity {
             
             AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(topLevelDestinations).build();
 
-            // Kết nối Toolbar với NavController
             NavigationUI.setupWithNavController(binding.toolbar, navController, appBarConfiguration);
-            
-            // Kết nối BottomNavigationView với NavController
+
             NavigationUI.setupWithNavController(binding.bottomNavigation, navController);
         }
     }

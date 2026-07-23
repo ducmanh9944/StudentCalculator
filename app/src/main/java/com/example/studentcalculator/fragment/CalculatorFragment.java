@@ -38,7 +38,6 @@ public class CalculatorFragment extends Fragment {
     }
 
     private void setupClickListeners() {
-        // Numbers
         binding.btn0.setOnClickListener(v -> viewModel.append("0"));
         binding.btn1.setOnClickListener(v -> viewModel.append("1"));
         binding.btn2.setOnClickListener(v -> viewModel.append("2"));
@@ -50,7 +49,6 @@ public class CalculatorFragment extends Fragment {
         binding.btn8.setOnClickListener(v -> viewModel.append("8"));
         binding.btn9.setOnClickListener(v -> viewModel.append("9"));
 
-        // Operators
         binding.btnPlus.setOnClickListener(v -> viewModel.append("+"));
         binding.btnMinus.setOnClickListener(v -> viewModel.append("-"));
         binding.btnMultiply.setOnClickListener(v -> viewModel.append("×"));
@@ -58,18 +56,20 @@ public class CalculatorFragment extends Fragment {
         binding.btnDot.setOnClickListener(v -> viewModel.append("."));
         binding.btnPercent.setOnClickListener(v -> viewModel.append("%"));
 
-        // Math Functions
         binding.btnSqr.setOnClickListener(v -> viewModel.appendSquare());
         binding.btnPow.setOnClickListener(v -> viewModel.appendPower());
         binding.btnSqrt.setOnClickListener(v -> viewModel.appendSqrt());
 
-        // Control Functions
+        if (binding.btnSin != null) binding.btnSin.setOnClickListener(v -> viewModel.appendSin());
+        if (binding.btnCos != null) binding.btnCos.setOnClickListener(v -> viewModel.appendCos());
+        if (binding.btnTan != null) binding.btnTan.setOnClickListener(v -> viewModel.appendTan());
+        if (binding.btnPi != null) binding.btnPi.setOnClickListener(v -> viewModel.appendPi());
+
         binding.btnAc.setOnClickListener(v -> viewModel.clear());
         binding.btnDel.setOnClickListener(v -> viewModel.delete());
         binding.btnEquals.setOnClickListener(v -> viewModel.onEquals());
         binding.btnSign.setOnClickListener(v -> viewModel.toggleSign());
-        
-        // Parentheses Logic
+
         binding.btnParentheses.setOnClickListener(v -> {
             String current = viewModel.getExpression().getValue();
             if (current != null && !current.isEmpty()) {

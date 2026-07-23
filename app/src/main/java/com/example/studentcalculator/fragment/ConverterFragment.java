@@ -52,7 +52,6 @@ public class ConverterFragment extends Fragment {
                 android.R.layout.simple_dropdown_item_1line, categories);
         binding.spinnerCategory.setAdapter(categoryAdapter);
 
-        // Default category
         binding.spinnerCategory.setText(categories[0], false);
         updateUnitSpinners(categories[0]);
 
@@ -85,7 +84,6 @@ public class ConverterFragment extends Fragment {
         binding.spinnerFrom.setAdapter(unitAdapter);
         binding.spinnerTo.setAdapter(unitAdapter);
 
-        // Set default units
         binding.spinnerFrom.setText(units[0], false);
         binding.spinnerTo.setText(units[units.length > 1 ? 1 : 0], false);
     }

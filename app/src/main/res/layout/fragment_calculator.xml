@@ -65,61 +65,83 @@
         <!-- Action Buttons (White background) -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_ac"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             style="@style/Widget.App.Button.Circular.Action"
             android:text="AC"
             android:textColor="#FF5252" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_del"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             style="@style/Widget.App.Button.Circular.Action"
             android:text="DEL"
             android:textColor="#FF5252" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_parentheses"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             style="@style/Widget.App.Button.Circular.Action"
             android:text="( )" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_percent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             style="@style/Widget.App.Button.Circular.Action"
             android:text="%" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_sqr"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             style="@style/Widget.App.Button.Circular.Action"
             android:text="x²" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_pow"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             style="@style/Widget.App.Button.Circular.Action"
             android:text="xʸ" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_sqrt"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             style="@style/Widget.App.Button.Circular.Action"
             android:text="√" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_divide"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             style="@style/Widget.App.Button.Circular.Action"
             android:text="÷"
             android:textSize="24sp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_multiply"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             style="@style/Widget.App.Button.Circular.Action"
             android:text="×"
             android:textSize="24sp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_minus"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             style="@style/Widget.App.Button.Circular.Action"
             android:text="-"
             android:textSize="24sp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_plus"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             style="@style/Widget.App.Button.Circular.Action"
             android:text="+"
             android:textSize="24sp" />
@@ -127,68 +149,94 @@
         <!-- Equals Button -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_equals"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             style="@style/Widget.App.Button.Circular.Equals"
             android:text="=" />
 
         <!-- Numeric Buttons (Light Gray) -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_7"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             style="@style/Widget.App.Button.Circular.Numeric"
             android:text="7" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_8"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             style="@style/Widget.App.Button.Circular.Numeric"
             android:text="8" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_9"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             style="@style/Widget.App.Button.Circular.Numeric"
             android:text="9" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_4"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             style="@style/Widget.App.Button.Circular.Numeric"
             android:text="4" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_5"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             style="@style/Widget.App.Button.Circular.Numeric"
             android:text="5" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_6"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             style="@style/Widget.App.Button.Circular.Numeric"
             android:text="6" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             style="@style/Widget.App.Button.Circular.Numeric"
             android:text="1" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             style="@style/Widget.App.Button.Circular.Numeric"
             android:text="2" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_3"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             style="@style/Widget.App.Button.Circular.Numeric"
             android:text="3" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_sign"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             style="@style/Widget.App.Button.Circular.Numeric"
             android:text="+/-"
             android:textSize="18sp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_0"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             style="@style/Widget.App.Button.Circular.Numeric"
             android:text="0" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_dot"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             style="@style/Widget.App.Button.Circular.Numeric"
             android:text="." />
 

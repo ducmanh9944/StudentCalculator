@@ -1,15 +1,10 @@
 package com.example.studentcalculator.utils;
 
 public class UnitConverter {
-
-    // Categories
     public static final String CATEGORY_LENGTH = "Độ dài";
     public static final String CATEGORY_WEIGHT = "Khối lượng";
     public static final String CATEGORY_TEMPERATURE = "Nhiệt độ";
 
-    /**
-     * Chuyển đổi đơn vị chung
-     */
     public static double convert(String category, String from, String to, double value) {
         switch (category) {
             case CATEGORY_LENGTH:

@@ -48,7 +48,6 @@ public class CubicEquationFragment extends Fragment {
             double c = Double.parseDouble(sC);
             double d = Double.parseDouble(sD);
 
-            // Sử dụng ViewModel để giải và lưu lịch sử
             String result = viewModel.solveCubic(a, b, c, d);
             binding.tvResult.setText(result);
         } catch (NumberFormatException e) {

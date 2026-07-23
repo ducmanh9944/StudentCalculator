@@ -55,10 +55,16 @@ public class CalculatorViewModel extends AndroidViewModel {
 
     public void delete() {
         String current = expression.getValue();
-        if (current != null && !current.isEmpty()) {
+        if (current == null || current.isEmpty()) return;
+
+        if (current.endsWith("sin(") || current.endsWith("cos(") || current.endsWith("tan(")) {
+            expression.setValue(current.substring(0, current.length() - 4));
+        } else if (current.endsWith("√(")) {
+            expression.setValue(current.substring(0, current.length() - 2));
+        } else {
             expression.setValue(current.substring(0, current.length() - 1));
-            autoCalculate();
         }
+        autoCalculate();
     }
 
     private void autoCalculate() {
@@ -83,7 +89,6 @@ public class CalculatorViewModel extends AndroidViewModel {
             double val = ExpressionEvaluator.evaluate(expr);
             String formattedResult = NumberFormatter.format(val);
             
-            // Lưu vào lịch sử
             HistoryEntity history = new HistoryEntity(
                 "Calculator",
                 expr,
@@ -111,15 +116,11 @@ public class CalculatorViewModel extends AndroidViewModel {
         autoCalculate();
     }
 
-    public void appendSquare() {
-        append("^2");
-    }
-
-    public void appendPower() {
-        append("^");
-    }
-
-    public void appendSqrt() {
-        append("√(");
-    }
+    public void appendSquare() { append("^2"); }
+    public void appendPower() { append("^"); }
+    public void appendSqrt() { append("√("); }
+    public void appendPi() { append("π"); }
+    public void appendSin() { append("sin("); }
+    public void appendCos() { append("cos("); }
+    public void appendTan() { append("tan("); }
 }
